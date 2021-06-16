@@ -1,0 +1,19 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "rawblob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "rawdrop/{name}",
+      "connection": "AzureWebJobsStorage"
+    },
+    {
+      "name": "optimizedblob",
+      "type": "blob",
+      "path": "optimized/{name}",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    }
+  ]
+}
