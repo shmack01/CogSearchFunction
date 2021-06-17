@@ -1,4 +1,6 @@
 # CogSearchFunction
+Ghostscript to compress large PDF Files. Custom Web API skill to process images of PDF file pages. 
+# CogSearchFunction
 This solution contains 2 Function Apps that performs the following:
 - Compress large PDF Files
 - Process images from PDF pages for OCR
