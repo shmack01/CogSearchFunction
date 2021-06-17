@@ -129,7 +129,8 @@ def compose_response(json_data):
     if(operations is not None and len(operations) > 0):
         results = processBatchOperations(operations, results)
         operations["Ids"] = []
-    logging.info(results)
+    #logging.debug(results)
+    
     return json.dumps(results, ensure_ascii=False)
 
 def sendReadAPI(read_image,recordId, operations):

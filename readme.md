@@ -146,4 +146,17 @@ TODO:
 
 ### Considerations
 
+<br/>
+#### Multi-Threaded
+
+<br/>
+
 This python app is single-threaded. If need to process a substantially amount of Transactions per Second, then create a support ticket to increase the limit and may need to refactor the current application for async operations. Currently, the application far exceeds the 10 TPS limation. See [Performance-specific configurations](https://docs.microsoft.com/en-us/azure/azure-functions/python-scale-performance-reference#performance-specific-configurations)
+
+<br/>
+
+#### Design Patterns 
+
+<br/>
+
+Currently, the Retry Pattern is implemented to aid with the 429 errors. The [Circuit Breaker Pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker) is not implemented in this solution. The [Circuit Breaker Pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker) is typically for establishing connections in long-live environments and to prevent exhausting the service with multiple calls. The Retry Pattern will suffice for this solution since it is typically use for short-live environments like Function Apps. If there is a need for a longer execution times, consider the [Circuit Breaker Pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker). 
