@@ -146,8 +146,6 @@ TODO:
 
 ### Considerations
 
-
-<br/>
 <br/>
 #### Multi-Threaded
 
