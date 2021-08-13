@@ -152,6 +152,7 @@ The only required settings are:
 You will see a "raise KeyError(key) from None" error, when these are not set in the App Settings. 
 <br/>
 To add the settings, run the following code:
+
 ```
 az cloud set --name AzureUSGovernment
 Az login
