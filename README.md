@@ -145,7 +145,7 @@ The Function App output is in the following format:
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cportal%2Cbash%2Ckeda#install-the-azure-functions-core-tools)
 
 
-The only settings that are required are:
+The only required settings are:
 - **OCR_SUBSCRIPTION_KEY**
 - **OCR_ENDPOINT**
 <br/>
