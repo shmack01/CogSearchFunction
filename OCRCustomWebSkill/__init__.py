@@ -17,18 +17,32 @@ from msrest.exceptions import HttpOperationError
 from PIL import Image
 
 #TODO : Put in Application Settings
-subscription_key = "ece422658f8b4cdd80f45d4aec0865f8"
-endpoint = "https://ftagov-vision.cognitiveservices.azure.us"
+#os.environ["myAppSetting"]
+#subscription_key = "ece422658f8b4cdd80f45d4aec0865f8"
+#endpoint = "https://ftagov-vision.cognitiveservices.azure.us"
 #db_breaker = pybreaker.CircuitBreaker(fail_max=10, reset_timeout=60)
-VISION_TPS = 10 #Vision limit of transactions per second. NOTE: This is for POSTs and GETs batch count
-VISION_TPS_SECONDS = 1 #how many seconds for transactions
-RETRY_COUNT = 5
-TIMEOUT_MILLISECONDS = 1000
-INVALID_IMAGE = "INVALID_IMAGE"
+
+#Default values
+DEFAULT_VISION_TPS = 10 #Vision limit of transactions per second. NOTE: This is for POSTs and GETs batch count
+DEFAULT_VISION_TPS_SECONDS = 1 #how many seconds for transactions
+DEFAULT_RETRY_COUNT = 5
+DEFAULT_TIMEOUT_MILLISECONDS = 1000
+DEFAULT_INVALID_IMAGE = "INVALID_IMAGE"
+
+
+subscription_key = None
+endpoint = None
+VISION_TPS = None
+VISION_TPS_SECONDS = None
+RETRY_COUNT  = None
+TIMEOUT_MILLISECONDS = None
+INVALID_IMAGE = None
 
 
 def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
+
+    initialize_environment()
 
     try:
         body = json.dumps(req.get_json())
@@ -47,6 +61,65 @@ def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
              "Invalid body",
              status_code=400
         )
+
+def initialize_environment():
+    global subscription_key
+    global endpoint
+    global VISION_TPS
+    global VISION_TPS_SECONDS
+    global RETRY_COUNT 
+    global TIMEOUT_MILLISECONDS
+    global INVALID_IMAGE
+    if(subscription_key is None):
+        #global subscription_key
+        subscription_key = os.environ['OCR_SUBSCRIPTION_KEY']
+    
+
+    if(endpoint is None):
+
+        endpoint = os.environ['OCR_ENDPOINT']
+
+    #Assign Default values if not available
+    if(VISION_TPS is None or 
+        VISION_TPS_SECONDS is None or 
+        RETRY_COUNT is None or 
+        TIMEOUT_MILLISECONDS is None or
+        INVALID_IMAGE is None) :
+
+        #global VISION_TPS_SECONDS
+        #global VISION_TPS
+        #global RETRY_COUNT
+       # global TIMEOUT_MILLISECONDS
+       # global INVALID_IMAGE
+
+        try:
+            VISION_TPS = os.environ['OCR_VISION_TPS']
+        except KeyError  as error:
+            VISION_TPS = DEFAULT_VISION_TPS
+        try:
+            VISION_TPS_SECONDS = os.environ['OCR_VISION_TPS_SECONDS']
+        except KeyError  as error:
+            VISION_TPS_SECONDS = DEFAULT_VISION_TPS_SECONDS
+        try:
+            RETRY_COUNT = os.environ['OCR_RETRY_COUNT']
+        except KeyError  as error:
+            RETRY_COUNT = DEFAULT_RETRY_COUNT
+        try:
+            TIMEOUT_MILLISECONDS = os.environ['OCR_TIMEOUT_MILLISECOND']
+        except KeyError  as error:
+            TIMEOUT_MILLISECONDS = DEFAULT_TIMEOUT_MILLISECONDS
+        try:
+            INVALID_IMAGE = os.environ['OCR_INVALID_IMAGE']
+        except KeyError  as error:
+            INVALID_IMAGE = DEFAULT_INVALID_IMAGE
+
+
+    
+    logging.info(f"Setting VISION_TPS = {VISION_TPS}.")
+    logging.info(f"Setting VISION_TPS_SECONDS = {VISION_TPS_SECONDS}.")
+    logging.info(f"Setting RETRY_COUNT = {RETRY_COUNT}.")
+    logging.info(f"Setting TIMEOUT_MILLISECONDS = {TIMEOUT_MILLISECONDS}.")
+    logging.info(f"Setting INVALID_IMAGE = {INVALID_IMAGE}.")
 
 def compose_response(json_data):
     values = json.loads(json_data)['values']
@@ -134,6 +207,7 @@ def compose_response(json_data):
     return json.dumps(results, ensure_ascii=False)
 
 def sendReadAPI(read_image,recordId, operations):
+    
     retries = RETRY_COUNT
     start_time = datetime.now()
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))

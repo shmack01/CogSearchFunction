@@ -80,12 +80,12 @@ The Function App tier needs to be Premium or more to support [VNET integration a
 
 <br/>
 
-TODO: The following configurations are pulled from the Function App configuration. Each one explained below. 
-- **SUBSCRIBTION_KEY** - Key to access to Vision API
-- **VS_ENDPOINT** - Endpoint for the Computer Vision API. Example: https://{cog-search-name}.cognitiveservices.azure.us
-- **VISION_TPS** - Transactions per second. The default is 10 TPS. This value could change in the future or you increase the 10 TPS limit through a support ticket. See [costs](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/computer-vision/). 
-- **RETRY_COUNT** - With the 10 TPS limit, you will experience a "Too many requests" or 429 warning. This is expected and not logged as an error. The next call will wait until the next second to try again. See TIMEOUT_MILLISECONDS. Default is 5 retries. 
-- **TIMEOUT_MILLISECONDS** - The time to delay. This default is 1000 or 1 second. If 10 requests are sent to the Vision API and a 429 warning occurs, then the app will delay until the next second or TIMEOUT_MILLISECONDS. For example, 10 requests took 350 milliseconds, then the next retry will occur 1000 - 350 = 650 msecs. A delay of 650 msecs occurs. If TIMEOUT_MILLISECONDS is decrease to much, then the retries will be exausted. Remember we have a limit of 10 Transactions per Second. If this value is increased too much, then you risk the Function App timeout. 
+The following configurations are pulled from the Function App configuration. Each one explained below. 
+- **OCR_SUBSCRIBTION_KEY** - Key to access to Vision API
+- **OCR_ENDPOINT** - Endpoint for the Computer Vision API. Example: https://{cog-search-name}.cognitiveservices.azure.us
+- **OCR_VISION_TPS** - Transactions per second. The default is 10 TPS. This value could change in the future or you increase the 10 TPS limit through a support ticket. See [costs](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/computer-vision/). 
+- **OCR_RETRY_COUNT** - With the 10 TPS limit, you will experience a "Too many requests" or 429 warning. This is expected and not logged as an error. The next call will wait until the next second to try again. See OCR_TIMEOUT_MILLISECONDS. Default is 5 retries. 
+- **OCR_TIMEOUT_MILLISECONDS** - The time to delay. This default is 1000 or 1 second. If 10 requests are sent to the Vision API and a 429 warning occurs, then the app will delay until the next second or OCR_TIMEOUT_MILLISECONDS. For example, 10 requests took 350 milliseconds, then the next retry will occur 1000 - 350 = 650 msecs. A delay of 650 msecs occurs. If OCR_TIMEOUT_MILLISECONDS is decrease to much, then the retries will be exausted. Remember we have a limit of 10 Transactions per Second. If this value is increased too much, then you risk the Function App timeout. 
 > The [max timeout value](https://docs.microsoft.com/en-us/azure/search/cognitive-search-custom-skill-interface#web-api-custom-skill-interface) is PT3M50S(3 Minutes 50 Seconds). This is configured in the Skillset for scaling. See [Common Error Messages](#Troubleshooting)
 
 <br/>
@@ -134,7 +134,31 @@ The Function App output is in the following format:
 
 ### Deployment
 
-TODO:
+#### Deploy the Functions
+
+- Install VS Code
+- Install Azure Account extension
+- Install [Azure Function extension](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=csharp#install-the-azure-functions-extension)
+- [Sign in to Azure](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=csharp#sign-in-to-azure)
+- Clone the repository. Pres **F1** and enter **gitcl**. Press **Enter**. Then enter the repository url and **Enter**. [See docs](https://docs.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository#use-command-palette-to-clone-repository)
+- Install [Core Tools](
+https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cportal%2Cbash%2Ckeda#install-the-azure-functions-core-tools)
+
+
+The only settings that are required are:
+- **OCR_SUBSCRIPTION_KEY**
+- **OCR_ENDPOINT**
+<br/>
+You will see a "raise KeyError(key) from None" error, when these are not set in the App Settings. 
+<br/>
+To add the settings, run the following code:
+```
+az cloud set --name AzureUSGovernment
+Az login
+az account set -s "<subscription name>"
+
+az functionapp config appsettings set --name MyFunctionApp --resource-group MyResourceGroup --settings "OCR_SUBSCRIPTION_KEY=<your key>"
+```
 
 <br/>
 
