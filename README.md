@@ -143,6 +143,7 @@ The Function App output is in the following format:
 - Clone the repository. Pres **F1** and enter **gitcl**. Press **Enter**. Then enter the repository url and **Enter**. [See docs](https://docs.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository#use-command-palette-to-clone-repository)
 - Install [Core Tools](
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cportal%2Cbash%2Ckeda#install-the-azure-functions-core-tools)
+- Right-click the Function App Folder in the Explorer menu and **Deploy to Function App**.
 
 
 The only required settings are:
@@ -151,7 +152,7 @@ The only required settings are:
 <br/>
 You will see a "raise KeyError(key) from None" error, when these are not set in the App Settings. 
 <br/>
-To add the settings, run the following code:
+To add the settings, run the following code: <br/>
 
 ```
 az cloud set --name AzureUSGovernment
