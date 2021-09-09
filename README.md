@@ -141,6 +141,8 @@ The Function App output is in the following format:
 - Install [Azure Function extension](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=csharp#install-the-azure-functions-extension)
 - [Sign in to Azure](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=csharp#sign-in-to-azure)
   - For Azure Government, navigate to the settings and select your environment and enter your ARM endpoint URL.
+
+  
   ![Azure Government Settings](./images/VSCodeGov.jpg?raw=true)
 - Clone the repository. Pres **F1** and enter **gitcl**. Press **Enter**. Then enter the repository url and **Enter**. [See docs](https://docs.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository#use-command-palette-to-clone-repository)
 - Install [Core Tools](
