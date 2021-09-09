@@ -29,11 +29,11 @@ def main(rawblob: func.InputStream, optimizedblob: func.Out[func.InputStream], c
     with open(filename, 'wb') as tmpfile:
         tmpfile.write(rawblob.read())
 
-    if(name.endswith(".csv")):
+    if(not name.endswith(".pdf")):
         optimizedblob.set(rawblob.read())
-        with open(filename, 'rb') as outfilecsv:
-            logging.info("Writing csv file out to Blob")
-            optimizedblob.set(outfilecsv.read())
+        with open(filename, 'rb') as outfile:
+            logging.info("Writing file out to Blob")
+            optimizedblob.set(outfile.read())
             logging.info(f"Copy file to directory: {name}")
         return
 

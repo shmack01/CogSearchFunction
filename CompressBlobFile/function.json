@@ -11,7 +11,7 @@
     {
       "name": "optimizedblob",
       "type": "blob",
-      "path": "processed/{name}",
+      "path": "optimized/{name}",
       "connection": "AzureWebJobsStorage",
       "direction": "out"
     }

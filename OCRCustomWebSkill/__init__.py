@@ -16,11 +16,7 @@ from msrest.authentication import CognitiveServicesCredentials
 from msrest.exceptions import HttpOperationError
 from PIL import Image
 
-#TODO : Put in Application Settings
-#os.environ["myAppSetting"]
-#subscription_key = "ece422658f8b4cdd80f45d4aec0865f8"
-#endpoint = "https://ftagov-vision.cognitiveservices.azure.us"
-#db_breaker = pybreaker.CircuitBreaker(fail_max=10, reset_timeout=60)
+
 
 #Default values
 DEFAULT_VISION_TPS = 10 #Vision limit of transactions per second. NOTE: This is for POSTs and GETs batch count
@@ -196,7 +192,6 @@ def compose_response(json_data):
             operations["Ids"] = [] #clear the operations for the next batch
             batch_count = VISION_TPS
 
-        #logging.info(f"Results: {output}")
         
     #process the rest of the request if they are available
     if(operations is not None and len(operations) > 0):
@@ -225,11 +220,7 @@ def sendReadAPI(read_image,recordId, operations):
         try:
             
             read_response = computervision_client.read_in_stream(read_image, raw=True)
-            #read_response = callAPIHelper(read_image, computervision_client)
             retries = RETRY_COUNT
-            #Tested with URL
-            #read_response = computervision_client.read(url,raw=True )
-            #operations = parseLocation(recordId, operations, read_response)
 
         except HttpOperationError as e:
             if(e.response.status_code == 429): #TODO:Log error when retries over retry count
@@ -245,7 +236,7 @@ def sendReadAPI(read_image,recordId, operations):
                 logging.warning("This image error will be ignored. Will try to get the location anyway")
                 
             else:
-                logging.warning("Unknown error: {0} \n Retry count{1}".format(e.message), retries)
+                logging.warning("Unknown error: {0} \n Retry count{1}".format(e.message, retries))
                 retries -=1
                 continue
         operations = parseLocation(recordId, operations, read_response)
@@ -305,9 +296,6 @@ def processBatchOperations(operations, results):
                 #Checking if results are available, if not will retry
                 if read_result.status.lower() not in ['notstarted', 'running']:
                     retries = RETRY_COUNT #restart count
-
-                    #read_result = computervision_client.get_read_result(operation_id)
-                    #read_result = callAPIHelper(operation_id, computervision_client)
 
                     #Add results, line by line
                     if read_result.status == OperationStatusCodes.succeeded:
@@ -391,8 +379,6 @@ def emptyRecordId(results, record_id):
     return results
 #ComputerVisionOcrErrorException
 
-#@circuit(failure_threshold=10, recovery_timeout=60)
-#@db_breaker
 '''def callAPIHelper(operation_id, computervision_client):
     read_result = computervision_client.get_read_result(operation_id)
     return read_result
