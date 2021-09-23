@@ -1,0 +1,8 @@
+{
+    "name": "<Enter Name for Shared Private Endpoint>",
+    "properties": {
+      "privateLinkResourceId": "/subscriptions/<Enter Your Subscription ID>/resourceGroups/<Enter your Resource Group Name>/providers/Microsoft.Web/sites/<Enter your App Name>",
+      "groupId": "sites",
+      "requestMessage": "please approve"
+    }
+}

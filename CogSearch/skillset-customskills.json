@@ -1,0 +1,458 @@
+{
+  "name": "skillset-name-z",
+  "description": "Skillset Created from JSON Template. skillsetName: skillset-name-z; contentField: merged_content; enrichmentGranularity: pages; knowledgeStoreStorageAccount: storeageaccount-z;",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
+      "name": "#1",
+      "description": null,
+      "context": "/document/merged_content",
+      "defaultLanguageCode": "en",
+      "textSplitMode": "pages",
+      "maximumPageLength": 5000,
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/merged_content"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "textItems",
+          "targetName": "pages"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Text.MergeSkill",
+      "name": "#2",
+      "description": null,
+      "context": "/document",
+      "insertPreTag": " ",
+      "insertPostTag": " ",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/content"
+        },
+        {
+          "name": "itemsToInsert",
+          "source": "/document/normalized_images/*/text"
+        },
+        {
+          "name": "offsets",
+          "source": "/document/normalized_images/*/contentOffset"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mergedText",
+          "targetName": "merged_content"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
+      "name": "#3",
+      "description": "",
+      "context": "/document/normalized_images/*",
+      "uri": "skillset-custuri-z",
+      "httpMethod": "POST",
+      "timeout": "PT3M50S",
+      "batchSize": 1000,
+      "degreeOfParallelism": 10,
+      "inputs": [
+        {
+          "name": "image",
+          "source": "/document/normalized_images/*"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "targetName": "text"
+        },
+        {
+          "name": "layoutText",
+          "targetName": "layoutText"
+        }
+      ],
+      "httpHeaders": {}
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Util.ShaperSkill",
+      "name": "#4",
+      "description": null,
+      "context": "/document/normalized_images/*",
+      "inputs": [
+        {
+          "name": "image",
+          "sourceContext": "/document/normalized_images/*",
+          "inputs": [
+            {
+              "name": "width",
+              "source": "/document/normalized_images/*/width"
+            },
+            {
+              "name": "height",
+              "source": "/document/normalized_images/*/height"
+            },
+            {
+              "name": "originalWidth",
+              "source": "/document/normalized_images/*/originalWidth"
+            },
+            {
+              "name": "originalHeight",
+              "source": "/document/normalized_images/*/originalHeight"
+            },
+            {
+              "name": "text",
+              "source": "/document/normalized_images/*/text"
+            },
+            {
+              "name": "imgdata",
+              "source": "/document/normalized_images/*"
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "targetName": "imageprojection"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Util.ShaperSkill",
+      "name": "#5",
+      "description": null,
+      "context": "/document",
+      "inputs": [
+        {
+          "name": "Barcode_Number",
+          "source": "/document/Barcode_Number"
+        },
+        {
+          "name": "Title_of_Record",
+          "source": "/document/Title_of_Record"
+        },
+        {
+          "name": "Section",
+          "source": "/document/Section"
+        },
+        {
+          "name": "Material_Type",
+          "source": "/document/Material_Type"
+        },
+        {
+          "name": "Author",
+          "source": "/document/Author"
+        },
+        {
+          "name": "Project_Experiment_No",
+          "source": "/document/Project_Experiment_No"
+        },
+        {
+          "name": "Point_of_Contact",
+          "source": "/document/Point_of_Contact"
+        },
+        {
+          "name": "Keywords1",
+          "source": "/document/Keywords1"
+        },
+        {
+          "name": "Keywords2",
+          "source": "/document/Keywords2"
+        },
+        {
+          "name": "End_Date",
+          "source": "/document/End_Date"
+        },
+        {
+          "name": "Start_Date",
+          "source": "/document/Start_Date"
+        },
+        {
+          "name": "Notebook_No_Binder_No",
+          "source": "/document/Notebook_No_Binder_No"
+        },
+        {
+          "name": "Filename",
+          "source": "/document/Filename"
+        },
+        {
+          "name": "metadata_storage_content_type",
+          "source": "/document/metadata_storage_content_type"
+        },
+        {
+          "name": "metadata_storage_size",
+          "source": "/document/metadata_storage_size"
+        },
+        {
+          "name": "metadata_storage_last_modified",
+          "source": "/document/metadata_storage_last_modified"
+        },
+        {
+          "name": "metadata_storage_content_md5",
+          "source": "/document/metadata_storage_content_md5"
+        },
+        {
+          "name": "metadata_storage_name",
+          "source": "/document/metadata_storage_name"
+        },
+        {
+          "name": "metadata_storage_path",
+          "source": "/document/metadata_storage_path"
+        },
+        {
+          "name": "metadata_storage_file_extension",
+          "source": "/document/metadata_storage_file_extension"
+        },
+        {
+          "name": "metadata_content_type",
+          "source": "/document/metadata_content_type"
+        },
+        {
+          "name": "metadata_language",
+          "source": "/document/metadata_language"
+        },
+        {
+          "name": "metadata_author",
+          "source": "/document/metadata_author"
+        },
+        {
+          "name": "metadata_title",
+          "source": "/document/metadata_title"
+        },
+        {
+          "name": "metadata_creation_date",
+          "source": "/document/metadata_creation_date"
+        },
+        {
+          "name": "merged_content",
+          "source": "/document/merged_content"
+        },
+        {
+          "name": "pages",
+          "sourceContext": "/document/merged_content/pages/*",
+          "inputs": [
+            {
+              "name": "Page",
+              "source": "/document/merged_content/pages/*"
+            }
+          ]
+        },
+        {
+          "name": "Images",
+          "sourceContext": "/document/normalized_images/*",
+          "inputs": [
+            {
+              "name": "Images",
+              "source": "/document/normalized_images/*/imageprojection/image"
+            },
+            {
+              "name": "layoutText",
+              "source": "/document/normalized_images/*/layoutText"
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "targetName": "objectprojection"
+        }
+      ]
+    },
+    {
+      "@odata.type": "#Microsoft.Skills.Util.ShaperSkill",
+      "name": "#6",
+      "description": null,
+      "context": "/document",
+      "inputs": [
+        {
+          "name": "Barcode_Number",
+          "source": "/document/Barcode_Number"
+        },
+        {
+          "name": "Title_of_Record",
+          "source": "/document/Title_of_Record"
+        },
+        {
+          "name": "Section",
+          "source": "/document/Section"
+        },
+        {
+          "name": "Material_Type",
+          "source": "/document/Material_Type"
+        },
+        {
+          "name": "Author",
+          "source": "/document/Author"
+        },
+        {
+          "name": "Project_Experiment_No",
+          "source": "/document/Project_Experiment_No"
+        },
+        {
+          "name": "Point_of_Contact",
+          "source": "/document/Point_of_Contact"
+        },
+        {
+          "name": "Keywords1",
+          "source": "/document/Keywords1"
+        },
+        {
+          "name": "Keywords2",
+          "source": "/document/Keywords2"
+        },
+        {
+          "name": "End_Date",
+          "source": "/document/End_Date"
+        },
+        {
+          "name": "Start_Date",
+          "source": "/document/Start_Date"
+        },
+        {
+          "name": "Notebook_No_Binder_No",
+          "source": "/document/Notebook_No_Binder_No"
+        },
+        {
+          "name": "Filename",
+          "source": "/document/Filename"
+        },
+        {
+          "name": "metadata_storage_content_type",
+          "source": "/document/metadata_storage_content_type"
+        },
+        {
+          "name": "metadata_storage_size",
+          "source": "/document/metadata_storage_size"
+        },
+        {
+          "name": "metadata_storage_last_modified",
+          "source": "/document/metadata_storage_last_modified"
+        },
+        {
+          "name": "metadata_storage_content_md5",
+          "source": "/document/metadata_storage_content_md5"
+        },
+        {
+          "name": "metadata_storage_name",
+          "source": "/document/metadata_storage_name"
+        },
+        {
+          "name": "metadata_storage_path",
+          "source": "/document/metadata_storage_path"
+        },
+        {
+          "name": "metadata_storage_file_extension",
+          "source": "/document/metadata_storage_file_extension"
+        },
+        {
+          "name": "metadata_content_type",
+          "source": "/document/metadata_content_type"
+        },
+        {
+          "name": "metadata_language",
+          "source": "/document/metadata_language"
+        },
+        {
+          "name": "metadata_author",
+          "source": "/document/metadata_author"
+        },
+        {
+          "name": "metadata_title",
+          "source": "/document/metadata_title"
+        },
+        {
+          "name": "metadata_creation_date",
+          "source": "/document/metadata_creation_date"
+        },
+        {
+          "name": "merged_content",
+          "source": "/document/merged_content"
+        },
+        {
+          "name": "pages",
+          "sourceContext": "/document/merged_content/pages/*",
+          "inputs": [
+            {
+              "name": "Page",
+              "source": "/document/merged_content/pages/*"
+            }
+          ]
+        },
+        {
+          "name": "Images",
+          "source": "/document/normalized_images/*/imageprojection/image"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "targetName": "tableprojection"
+        }
+      ]
+    }
+  ],
+  "knowledgeStore": {
+    "storageConnectionString": "DefaultEndpointsProtocol=https;AccountName=storeageaccount-z;AccountKey=storeagKey-z;EndpointSuffix=storeEndpoint-z",
+    "projections": [
+      {
+        "tables": [
+          {
+            "tableName": "azureblobSkillsetKbDocument",
+            "referenceKeyName": null,
+            "generatedKeyName": "Documentid",
+            "source": "/document/tableprojection",
+            "sourceContext": null,
+            "inputs": []
+          },
+          {
+            "tableName": "azureblobSkillsetKbPages",
+            "referenceKeyName": null,
+            "generatedKeyName": "Pagesid",
+            "source": "/document/tableprojection/pages/*",
+            "sourceContext": null,
+            "inputs": []
+          },
+          {
+            "tableName": "azureblobSkillsetKbImages",
+            "referenceKeyName": null,
+            "generatedKeyName": "Imagesid",
+            "source": "/document/tableprojection/Images/*",
+            "sourceContext": null,
+            "inputs": []
+          }
+        ],
+        "objects": [
+          {
+            "storageContainer": "blobprojections",
+            "referenceKeyName": null,
+            "generatedKeyName": "blobprojectionsKey",
+            "source": "/document/objectprojection",
+            "sourceContext": null,
+            "inputs": []
+          }
+        ],
+        "files": [
+          {
+            "storageContainer": "azureblob-skillset-kb-image-projection",
+            "referenceKeyName": null,
+            "generatedKeyName": "imagepath",
+            "source": "/document/tableprojection/Images/*/imgdata",
+            "sourceContext": null,
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "synthesizeGeneratedKeyName": true
+    }
+  },
+  "encryptionKey": null
+}

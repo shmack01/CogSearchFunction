@@ -1,0 +1,37 @@
+#Set Cloud to log into diff env
+
+#Azure Commerical Env
+#az cloud set --name AzureCloud
+
+#If you need to use Azure Gov:
+az cloud set --name AzureUSGovernment
+
+#Clear Account if creds/context are stored
+az account clear
+
+#Log into Azure with CLI
+az login 
+
+#List subscriptions:
+az account show --output table
+
+
+#Parms to use
+#Run with Bash
+#Create Shared Private Link Resources Management APIs: https://docs.microsoft.com/en-us/azure/search/search-indexer-howto-access-private#shared-private-link-resources-management-apis
+
+rSubID="<Enter subscription Id>"
+rGroup="<Enter resource group name>"
+rSearchService="<Enter Cog Search Service Name>"
+
+#rPECNAME should match the name used in the create-pe.json file for: Name
+rPECName="<Enter Name for Shared Private Endpoint>"
+
+rAPI="https://management.usgovcloudapi.net/subscriptions/"$rSubID"/resourceGroups/"$rGroup"/providers/Microsoft.Search/searchServices/"$rSearchService"/sharedPrivateLinkResources/"$rPECName"?api-version=2020-08-01-preview"
+
+az rest --method put --uri $rAPI --body @create-pe.json
+
+
+#GetStatus:
+rAPI="https://management.usgovcloudapi.net/subscriptions/"$rSubID"/resourceGroups/"$rGroup"/providers/Microsoft.Search/searchServices/"$rSearchService"/sharedPrivateLinkResources/"$rPECName"?api-version=2020-08-01-preview"
+az rest --method get --uri $rAPI

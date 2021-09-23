@@ -1,0 +1,52 @@
+{
+    "name": "azureblob-indexer-z",
+    "description": "This is a demo indexer created with Rest",
+    "dataSourceName": "dataSourceName-z",
+    "skillsetName": "skillset-name-z",
+    "targetIndexName": "index-name-z",
+    "disabled": null,
+    "schedule": null,
+    "parameters": {
+        "batchSize": null,
+        "maxFailedItems": -1,
+        "maxFailedItemsPerBatch": -1,
+        "base64EncodeKeys": null,   
+        "configuration": {
+            "executionEnvironment": "private",
+            "imageAction": "generateNormalizedImagePerPage",
+            "excludedFileNameExtensions": ".csv, .CSV",
+            "indexedFileNameExtensions": ".pdf,.PDF",
+            "failOnUnsupportedContentType": false,
+            "failOnUnprocessableDocument": false,
+            "indexStorageMetadataOnlyForOversizedDocuments": true,
+            "dataToExtract": "contentAndMetadata",
+            "parsingMode": "default"
+        }
+    },
+    "fieldMappings": [
+        {
+            "sourceFieldName": "metadata_storage_path",
+            "targetFieldName": "metadata_storage_path",
+            "mappingFunction": {"name": "base64Encode"}
+        },
+        {
+            "sourceFieldName": "metadata_storage_name",
+            "targetFieldName": "metadata_storage_name"
+          }
+    ],
+    "outputFieldMappings": [
+  
+        {
+            "sourceFieldName": "/document/merged_content",
+            "targetFieldName": "merged_content"
+        },
+        {
+            "sourceFieldName": "/document/normalized_images/*/text",
+            "targetFieldName": "text"
+        },
+        {
+            "sourceFieldName": "/document/normalized_images/*/layoutText",
+            "targetFieldName": "layoutText"
+        }
+    ]
+}
