@@ -13,9 +13,11 @@ This is needed for all services that are setup with Private Endpoint Access.  So
 >For the function app use file: [DeploySharedPrivateEndpoint.azcli](/CogSearch/DeploySharedPrivateEndpoint.azcli)
 
 <br/>
+
 This sample script is written to run using BASH and you will need to update the values of the parameters along with a some values in file: create-pe.json
 ### Deploy your Index and components for the index
-To deploy your data source, index, skillset, and indexer see file: [CogSearchHelper.ps1](/CogSearchHelper.ps1)
+To deploy your data source, index, skillset, and indexer see file: [CogSearchHelper.ps1](/CogSearch/CogSearchHelper.ps1)
+
 </br>
 This file includes small scripts to broke up into 4 steps with notes on how to use each step. There are other helpful REST calls to get information about your index and status of indexers.  The PowerShell scripts use web requests using the Cognitive Search Rest API.  These are examples on how to use the REST API and can be included into a CI/CD process.
 
