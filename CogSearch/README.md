@@ -11,6 +11,7 @@ The script has comments included.  You will need to update the parameter values 
 This is needed for all services that are setup with Private Endpoint Access.  Some Services can be setup with the portal others can not, like the function.
 
 >For the function app use file: [DeploySharedPrivateEndpoint.azcli](/CogSearch/DeploySharedPrivateEndpoint.azcli)
+
 <br/>
 This sample script is written to run using BASH and you will need to update the values of the parameters along with a some values in file: create-pe.json
 ### Deploy your Index and components for the index
