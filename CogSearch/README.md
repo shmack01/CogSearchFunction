@@ -21,10 +21,10 @@ To deploy your data source, index, skillset, and indexer see file: [CogSearchHel
 </br>
 This file includes small scripts to broke up into 4 steps with notes on how to use each step. There are other helpful REST calls to get information about your index and status of indexers.  The PowerShell scripts use web requests using the Cognitive Search Rest API.  These are examples on how to use the REST API and can be included into a CI/CD process.
 
-1.  Create Data Source - which is for your index using a storage account.  Make sure to update parameter values to match your services values
-2.  Create Index -uses the index.json template for your indexes schema.  If you would like to add columns / fields to your index you will need to update the index.json file.  If changing the schema of your index, it will require you to drop the index and create a new one.  (there is an example API call in the file for this)
-3.  Create Skillset - this uses the skillset-customskillsNoKB.json file for the core template of a skillset with a custom skill for the function endpoint to handle the OCR of a PDF. You do not need to modify the json file just set the parameter values to match your services. 
-4.  Create/Update indexer - this API uses the indexer.json file, just like the other steps you do not need to modify the .json file just the parameter values
+>1.  Create Data Source - which is for your index using a storage account.  Make sure to update parameter values to match your services values
+>2.  Create Index -uses the index.json template for your indexes schema.  If you would like to add columns / fields to your index you will need to update the index.json file.  If changing the schema of your index, it will require you to drop the index and create a new one.  (there is an example API call in the file for this)
+>3.  Create Skillset - this uses the skillset-customskillsNoKB.json file for the core template of a skillset with a custom skill for the function endpoint to handle the OCR of a PDF. You do not need to modify the json file just set the parameter values to match your services. 
+>4.  Create/Update indexer - this API uses the indexer.json file, just like the other steps you do not need to modify the .json file just the parameter values
 
 In order to work with Cog Search behind a private link connection you will need to use the Rest API(s).  There are examples and some notes in the about file to check on the status of the indexer, reset and rerun an indexer job and reference links to the MS Docs pages. 
 
